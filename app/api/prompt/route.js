@@ -6,11 +6,10 @@ export const GET = async (request) => {
 		await connectToDB();
 
 		const prompts = await Prompt.find({}).populate("creator");
-		if (!prompts) return new Response("Prompt not found", { status: 404 });
 
 		return new Response(JSON.stringify(prompts), { status: 200 });
 	} catch (error) {
 		console.log(error);
-		return new Response("Failed to fetch all prompts", { status: 500 });
+		return new Response("Failed to fetch user prompts", { status: 500 });
 	}
 };

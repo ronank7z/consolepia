@@ -27,15 +27,13 @@ const Feed = () => {
 	};
 
 	useEffect(() => {
-		const fetchPosts = async (search) => {
-			const response = search
-				? await fetch(`api/prompt?q=${search}`)
-				: await fetch("api/prompt");
+		const fetchPosts = async () => {
+			const response = await fetch("api/prompt");
 			const data = await response.json();
 			setPosts(data);
 		};
 
-		fetchPosts(searchText);
+		fetchPosts();
 	}, []);
 
 	return (
