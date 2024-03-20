@@ -6,20 +6,28 @@ import { useRouter } from "next/navigation";
 
 import Profile from "@components/Profile";
 
-const MyProfile = () => {
+const UserProfile = ({ params }) => {
 	const router = useRouter();
 	const { data: session } = useSession();
 
 	const [posts, setPosts] = useState([]);
+	const [username, setUsername] = useState("");
 
 	useEffect(() => {
 		const fetchPosts = async () => {
-			const response = await fetch(`api/users/${session?.user.id}/posts`);
+			const response = await fetch(`/api/users/${params.id}/posts`);
 			const data = await response.json();
 			setPosts(data);
 		};
 
-		if (session?.user.id) fetchPosts();
+		const fetchUser = async () => {
+			const response = await fetch(`/api/users/${params.id}`);
+			const data = await response.json();
+			setUsername(data.username);
+		};
+
+		fetchPosts();
+		fetchUser();
 	}, []);
 
 	const handleEdit = (post) => {
@@ -47,8 +55,8 @@ const MyProfile = () => {
 
 	return (
 		<Profile
-			name="My"
-			desc="Welcome to your presonalized profile page"
+			name={username}
+			desc="See what happened and connect with them"
 			data={posts}
 			handleEdit={handleEdit}
 			handleDelete={handleDelete}
@@ -56,4 +64,4 @@ const MyProfile = () => {
 	);
 };
 
-export default MyProfile;
+export default UserProfile;
