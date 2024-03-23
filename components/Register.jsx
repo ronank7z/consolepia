@@ -3,8 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { TbCircleCheckFilled } from "react-icons/tb";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
+	const router = useRouter();
 	const [submitting, setSubmitting] = useState(false);
 	const [isSamePassword, setIsSamePassword] = useState(false);
 	const [checkPassLength, setCheckPassLength] = useState(false);
@@ -72,6 +74,7 @@ const Register = () => {
 			});
 		} finally {
 			setSubmitting(false);
+			router.push("/sign-in");
 		}
 	};
 
