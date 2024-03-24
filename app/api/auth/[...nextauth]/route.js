@@ -29,8 +29,15 @@ const handler = NextAuth({
 				);
 
 				if (matchPassword) {
-					return { id: user._id, username: user.username };
+					return {
+						id: user._id,
+						name: user.username,
+						email: user.email || "",
+						image: user.image || "",
+					};
 				}
+
+				console.log({ credentials });
 				return null;
 			},
 		}),
@@ -44,7 +51,11 @@ const handler = NextAuth({
 			const sessionUser = await User.findOne({
 				$or: [{ email: session.user.email }, { username: session.user.name }],
 			});
+
+			console.log({ sessionUser });
 			session.user.id = sessionUser._id.toString();
+
+			console.log({ session });
 
 			return session;
 		},
