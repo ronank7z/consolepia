@@ -2,10 +2,13 @@ import "@styles/globals.css";
 
 import Nav from "@components/Nav";
 import Provider from "@components/Provider";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 export const metadata = {
 	title: "Consolepia",
 	description: "Discover & Share AI Prompts",
+	icons: { icon: "/assets/images/logo.svg" },
 };
 
 const RootLayout = ({ children }) => {
@@ -18,7 +21,7 @@ const RootLayout = ({ children }) => {
 					</div>
 					<main className="app">
 						<Nav />
-						{children}
+						<Suspense fallback={<Loading />}>{children}</Suspense>
 					</main>
 				</Provider>
 			</body>

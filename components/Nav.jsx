@@ -14,6 +14,16 @@ const Nav = () => {
 	const [providers, setProviders] = useState(null);
 	const [toggleDropdown, setToggleDropdown] = useState(false);
 
+	const handleSignOut = async () => {
+		try {
+			await signOut();
+			router.push("/");
+		} catch (error) {
+			console.log({ error });
+			return false;
+		}
+	};
+
 	useEffect(() => {
 		const setUpProviders = async () => {
 			const response = await getProviders();
@@ -47,12 +57,15 @@ const Nav = () => {
 								Create Post
 							</Link>
 
-							<button type="button" onClick={signOut} className="outline_btn">
+							<button
+								type="button"
+								onClick={handleSignOut}
+								className="outline_btn">
 								Sign Out
 							</button>
 							<Link href={`/profile/${session?.user.id}`}>
 								<Image
-									src={session?.user.image}
+									src={session?.user.image || "/assets/images/no-profile.svg"}
 									width={37}
 									height={37}
 									className="rounded-full"
@@ -79,7 +92,7 @@ const Nav = () => {
 					{session?.user ? (
 						<div className="flex">
 							<Image
-								src={session?.user.image}
+								src={session?.user.image || "/assets/images/no-profile.svg"}
 								width={37}
 								height={37}
 								className="rounded-full"
@@ -91,7 +104,7 @@ const Nav = () => {
 							{toggleDropdown && (
 								<div className="dropdown">
 									<Link
-										href="/profile"
+										href={`/profile/${session?.user.id}`}
 										className="dropdown_link"
 										onClick={() => setToggleDropdown(false)}>
 										My Profile
@@ -106,7 +119,7 @@ const Nav = () => {
 										type="button"
 										onClick={() => {
 											setToggleDropdown(false);
-											signOut();
+											handleSignOut();
 										}}
 										className="mt-5 w-full black_btn">
 										Sign Out

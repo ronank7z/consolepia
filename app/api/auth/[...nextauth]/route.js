@@ -51,12 +51,7 @@ const handler = NextAuth({
 			const sessionUser = await User.findOne({
 				$or: [{ email: session.user.email }, { username: session.user.name }],
 			});
-
-			console.log({ sessionUser });
 			session.user.id = sessionUser._id.toString();
-
-			console.log({ session });
-
 			return session;
 		},
 		async signIn({ account, profile }) {

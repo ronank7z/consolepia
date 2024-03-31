@@ -56,6 +56,7 @@ const UserProfile = ({ params }) => {
 	return (
 		<Profile
 			name={username}
+			params={params}
 			desc="See what happened and connect with them"
 			data={posts}
 			handleEdit={handleEdit}

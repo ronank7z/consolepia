@@ -1,4 +1,5 @@
 import Feed from "@components/Feed";
+import { Suspense } from "react";
 
 const Home = () => {
 	return (
@@ -14,7 +15,9 @@ const Home = () => {
 				conversations, and be inspired by others.
 			</p>
 
-			<Feed />
+			<Suspense fallback={<p>Loading feed..</p>}>
+				<Feed />
+			</Suspense>
 		</section>
 	);
 };
