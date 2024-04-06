@@ -1,96 +1,60 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { TbCircleCheckFilled } from "react-icons/tb";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-
-const ProfileForm = () => {
-	const router = useRouter();
-	const [submitting, setSubmitting] = useState(false);
-	const [userProfile, setUserProfile] = useState({
-		firstName: "",
-		lastName: "",
-	});
-
-	const handleSubmit = async (e) => {
-		e.preventDefault();
-		setSubmitting(true);
-		const { firstName, lastName } = userProfile;
-
-		try {
-			const response = await fetch("/api/users/", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({ firstName, lastName }),
-			});
-
-			if (!response.ok) {
-				return new Response("Register failed", {
-					status: 501,
-				});
-			} else {
-				return new Response("Register success", {
-					status: 200,
-				});
-			}
-		} catch (error) {
-			return new Response(error, {
-				status: 501,
-			});
-		} finally {
-			setSubmitting(false);
-			router.refresh();
-		}
-	};
-
-	const validateForm = (e) => {
-		e.preventDefault();
-		handleSubmit(e);
-	};
+const ProfileForm = ({ userData, setUserData, handleSubmit, submitting }) => {
 	return (
-		<section className="w-full max-w-xl mt-20">
+		<section className="w-full max-w-xl">
+			<h1 className="head_text text-left mb-6">
+				<span className="blue_gradient">Edit Profile</span>
+			</h1>
 			<form
 				className="t-10 w-full max-w-2xl flex flex-col gap-7 glassmorphism"
-				onSubmit={(e) => {
-					validateForm(e);
-				}}>
-				<div className="flex gap-3 items-center">
-					<label className="w-full">
-						<span className="font-satoshi font-semibold text-base text-gray-700">
-							First Name
-						</span>
+				onSubmit={handleSubmit}>
+				<label className="w-full">
+					<span className="font-satoshi font-semibold text-base text-gray-700">
+						Full Name
+					</span>
 
-						<input
-							type="text"
-							value={userProfile.firstName}
-							onChange={(e) => {
-								setUser({ ...userProfile, firstName: e.target.value });
-							}}
-							placeholder="Your First Name"
-							required
-							className="form_input"
-						/>
-					</label>
-					<label className="w-full">
-						<span className="font-satoshi font-semibold text-base text-gray-700">
-							Last Name
-						</span>
+					<input
+						type="text"
+						value={userData.fullName}
+						onChange={(e) => {
+							setUserData({ ...userData, fullName: e.target.value });
+						}}
+						placeholder="Your Full Name"
+						required
+						className="form_input"
+					/>
+				</label>
+				<label className="w-full">
+					<span className="font-satoshi font-semibold text-base text-gray-700">
+						Username
+					</span>
 
-						<input
-							type="text"
-							value={userProfile.lastName}
-							onChange={(e) => {
-								setUser({ ...userProfile, lastName: e.target.value });
-							}}
-							placeholder="Your Last Name"
-							required
-							className="form_input"
-						/>
-					</label>
-				</div>
+					<input
+						type="text"
+						value={userData.username}
+						onChange={(e) => {
+							setUserData({ ...userData, username: e.target.value });
+						}}
+						placeholder="Your Username"
+						required
+						className="form_input"
+					/>
+				</label>
+				<label className="w-full">
+					<span className="font-satoshi font-semibold text-base text-gray-700">
+						Bio
+					</span>
+
+					<input
+						type="text"
+						value={userData.bio}
+						onChange={(e) => {
+							setUserData({ ...userData, bio: e.target.value });
+						}}
+						placeholder="Your Bio"
+						required
+						className="form_input"
+					/>
+				</label>
 				<button
 					type="submit"
 					disabled={submitting}

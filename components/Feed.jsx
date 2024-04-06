@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 
-import PromptCard from "./PromptCard";
+const PromptCard = lazy(() => import("./PromptCard"));
 
 const PromptCardList = ({ data, handleTagClick }) => {
 	return (
@@ -71,12 +71,16 @@ const Feed = () => {
 			</form>
 
 			{searchText ? (
-				<PromptCardList
-					data={searchedResults}
-					handleTagClick={handleTagClick}
-				/>
+				<Suspense fallback={<div>Loading prompt...</div>}>
+					<PromptCardList
+						data={searchedResults}
+						handleTagClick={handleTagClick}
+					/>
+				</Suspense>
 			) : (
-				<PromptCardList data={posts} handleTagClick={handleTagClick} />
+				<Suspense fallback={<div>Loading prompt...</div>}>
+					<PromptCardList data={posts} handleTagClick={handleTagClick} />
+				</Suspense>
 			)}
 		</section>
 	);

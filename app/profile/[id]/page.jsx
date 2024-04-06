@@ -1,17 +1,23 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense, lazy } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import Profile from "@components/Profile";
+const Profile = lazy(() => import("@components/Profile"));
 
 const UserProfile = ({ params }) => {
 	const router = useRouter();
 	const { data: session } = useSession();
 
 	const [posts, setPosts] = useState([]);
-	const [username, setUsername] = useState("");
+	const [userData, setUserData] = useState({
+		username: "",
+		fullName: "",
+		email: "",
+		image: "",
+		bio: "",
+	});
 
 	useEffect(() => {
 		const fetchPosts = async () => {
@@ -23,7 +29,7 @@ const UserProfile = ({ params }) => {
 		const fetchUser = async () => {
 			const response = await fetch(`/api/users/${params.id}`);
 			const data = await response.json();
-			setUsername(data.username);
+			setUserData(data);
 		};
 
 		fetchPosts();
@@ -54,14 +60,15 @@ const UserProfile = ({ params }) => {
 	};
 
 	return (
-		<Profile
-			name={username}
-			params={params}
-			desc="See what happened and connect with them"
-			data={posts}
-			handleEdit={handleEdit}
-			handleDelete={handleDelete}
-		/>
+		<Suspense fallback={<div>Loading...</div>}>
+			<Profile
+				userData={userData}
+				params={params}
+				data={posts}
+				handleEdit={handleEdit}
+				handleDelete={handleDelete}
+			/>
+		</Suspense>
 	);
 };
 

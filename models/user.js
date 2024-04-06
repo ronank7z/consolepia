@@ -1,6 +1,9 @@
 import { Schema, model, models } from "mongoose";
 
 const UserSchema = new Schema({
+	fullName: {
+		type: String,
+	},
 	email: {
 		type: String,
 	},
@@ -12,6 +15,9 @@ const UserSchema = new Schema({
 		type: String,
 	},
 	image: {
+		type: String,
+	},
+	bio: {
 		type: String,
 	},
 });

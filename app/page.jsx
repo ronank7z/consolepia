@@ -1,5 +1,5 @@
-import Feed from "@components/Feed";
-import { Suspense } from "react";
+import { Suspense, lazy } from "react";
+const Feed = lazy(() => import("@components/Feed"));
 
 const Home = () => {
 	return (

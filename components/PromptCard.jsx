@@ -18,11 +18,7 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
 	};
 
 	const handleProfileClick = (profile) => {
-		if (session?.user.name === profile.username) {
-			router.push("/profile");
-		} else {
-			router.push(`/profile/${profile._id}`);
-		}
+		router.push(`/profile/${profile._id}`);
 	};
 
 	return (
@@ -33,17 +29,18 @@ const PromptCard = ({ post, handleTagClick, handleEdit, handleDelete }) => {
 						src={post.creator.image || "/assets/images/no-profile.svg"}
 						width={40}
 						height={40}
-						alt={`${post.creator.name}-profile-picture`}
+						alt={`${post.creator.username}-profile-picture`}
+						loading="lazy"
 						className="rounded-full object-contain"
 					/>
 					<div className="flex flex-col">
 						<h3
 							className="font-satoshi font-semibold text-gray-900"
 							onClick={() => handleProfileClick(post.creator)}>
-							{post.creator.username}
+							{post?.creator.fullName || post?.creator.username}
 						</h3>
 						<p className="font-inter text-sm text-gray-500">
-							{post?.creator.email || "-"}
+							{post?.creator.username || "-"}
 						</p>
 					</div>
 				</div>

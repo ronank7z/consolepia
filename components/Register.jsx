@@ -12,6 +12,7 @@ const Register = () => {
 	const [checkPassLength, setCheckPassLength] = useState(false);
 	const [minPassLength, setMinPassLength] = useState(8);
 	const [user, setUser] = useState({
+		fullName: "",
 		username: "",
 		inputPass: "",
 		confirmPass: "",
@@ -48,7 +49,7 @@ const Register = () => {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setSubmitting(true);
-		const { username, inputPass, confirmPass } = user;
+		const { fullName, username, inputPass, confirmPass } = user;
 
 		try {
 			const response = await fetch("/api/auth/register/", {
@@ -56,7 +57,7 @@ const Register = () => {
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify({ username, inputPass, confirmPass }),
+				body: JSON.stringify({ fullName, username, inputPass, confirmPass }),
 			});
 
 			if (!response.ok) {
@@ -105,6 +106,22 @@ const Register = () => {
 				onSubmit={(e) => {
 					validateForm(e);
 				}}>
+				<label className="w-full">
+					<span className="font-satoshi font-semibold text-base text-gray-700">
+						Full Name
+					</span>
+
+					<input
+						type="text"
+						value={user.fullName}
+						onChange={(e) => {
+							setUser({ ...user, fullName: e.target.value });
+						}}
+						placeholder="Your Full Name"
+						required
+						className="form_input"
+					/>
+				</label>
 				<label>
 					<span className="font-satoshi font-semibold text-base text-gray-700">
 						Username
@@ -116,7 +133,7 @@ const Register = () => {
 						onChange={(e) => {
 							setUser({ ...user, username: e.target.value });
 						}}
-						placeholder="Your username"
+						placeholder="Your Username"
 						required
 						className="form_input"
 					/>
